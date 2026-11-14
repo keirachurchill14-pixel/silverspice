@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The Daily Grimoire – Fantasy Word Search</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Pinyon+Script&family=Great+Vibes&display=swap">
+<style>
+html,body{margin:0;padding:0}
+body{background:#f3e6c4;color:#2a1a0f;font-family:"Great Vibes","Brush Script MT","Apple Chancery","Lucida Calligraphy",cursive;text-align:center}
+#page{max-width:600px;margin:0 auto;padding:14px 10px 30px}
+h1{font-family:"Pinyon Script","Great Vibes","Brush Script MT",cursive;font-weight:normal;font-size:46px;line-height:1.1;margin:6px 0 0;color:#6b1f2a}
+.orn{font-size:22px;color:#9a6b12;letter-spacing:6px;margin:2px 0}
+#date{font-size:26px;margin:0 0 4px}
+#count{font-size:24px;color:#1f4e8c;margin:4px 0 8px}
+#frame{border:4px double #6b1f2a;padding:6px;background:#fbf3dc;display:inline-block;width:94%;max-width:560px}
+table{border-collapse:collapse;table-layout:fixed;width:100%}
+td{padding:0;border:1px solid #d6c394;text-align:center;vertical-align:middle;
+font-family:"Cinzel",Georgia,serif;font-weight:bold;font-size:5.4vw;height:7.4vw;color:#2a1a0f;cursor:pointer}
+@media (min-width:600px){td{font-size:28px;height:42px}}
+td.sel{outline:3px solid #6b1f2a;outline-offset:-3px;background:#ead9a6}
+td.c0{background:#f08a8a;border-bottom:4px solid #9b2335}
+td.c1{background:#8fd6a8;border-bottom:4px solid #1f6b4f}
+td.c2{background:#8fb8f0;border-bottom:4px solid #1f4e8c}
+td.c3{background:#f5cf6b;border-bottom:4px solid #b57a0a}
+td.c4{background:#c9a6ec;border-bottom:4px solid #6b3fa0}
+td.c5{background:#f4a96b;border-bottom:4px solid #b4531a}
+td.show{background:#fff;border-bottom:4px dotted #2a1a0f}
+#words{margin:16px 0 6px;padding:10px 6px;border-top:2px solid #9a6b12;border-bottom:2px solid #9a6b12}
+#words h2{font-family:"Pinyon Script","Great Vibes",cursive;font-weight:normal;font-size:34px;margin:0 0 6px;color:#6b1f2a}
+.w{display:inline-block;width:31%;font-size:27px;line-height:1.25;margin:1px 0}
+.w.done{text-decoration:line-through;opacity:.75}
+.w.c0{color:#9b2335}.w.c1{color:#1f6b4f}.w.c2{color:#1f4e8c}.w.c3{color:#8a5a00}.w.c4{color:#6b3fa0}.w.c5{color:#b4531a}
+button{font-family:"Great Vibes","Brush Script MT",cursive;font-size:26px;background:#6b1f2a;color:#fbf3dc;border:2px solid #9a6b12;border-radius:6px;padding:4px 18px;margin:4px 6px}
+#msg{font-size:30px;color:#1f6b4f;min-height:34px;margin:6px 0}
+#hint{font-size:21px;margin:4px 0}
+</style>
+</head>
+<body>
+<div id="page">
+  <div class="orn">&#10022; &#10070; &#10022;</div>
+  <h1>The Daily Grimoire</h1>
+  <div id="date"></div>
+  <div id="count"></div>
+  <div id="frame"><table id="grid"></table></div>
+  <div id="msg"></div>
+  <div id="hint">Tap the first letter of a word, then its last letter.</div>
+  <div id="words"><h2>Words to be found</h2><div id="list"></div></div>
+  <button id="reveal">Reveal answers</button>
+  <button id="reset">Start over</button>
+  <div class="orn">&#10022; &#10070; &#10022;</div>
+</div>
+<script>
+(function(){
+var WORDS=["DRAGON","WIZARD","SORCERY","GOBLIN","ELVEN","DWARF","PHOENIX","UNICORN","GRIFFIN","CASTLE","QUEST","SPELL","POTION","SWORD","SHIELD","KNIGHT","TROLL","ORACLE","RUNE","ARCANE","MYSTIC","FAIRY","SPRITE","WYVERN","BASILISK","HYDRA","TOWER","CROWN","THRONE","DUNGEON","AMULET","SCROLL","WARLOCK","SORCERER","ENCHANT","CURSE","REALM","HERO","MINSTREL","ELIXIR","GNOME","PIXIE","CENTAUR","KRAKEN","LEGEND","RAVEN","DRUID","RANGER","PALADIN","BARD","NYMPH","SERPENT","GRIMOIRE","TALISMAN","CAULDRON","ORC","OGRE","GOLEM","FORGE","LANTERN","MOAT","BANSHEE","SIREN","WRAITH","SPECTER","COVEN","RELIC","STAFF","DAGGER","ARROW","QUIVER","HOLLOW","ENCHANTRESS","MAGE","PRINCE","DAMSEL","BEAST","CHALICE","SAGA","FABLE","HAVEN"];
+var N=12,COUNT=12;
+var DIRS=[[0,1],[1,0],[1,1],[-1,1],[0,-1],[-1,0],[-1,-1],[1,-1]];
+var now=new Date();
+var key=now.getFullYear()+"-"+("0"+(now.getMonth()+1)).slice(-2)+"-"+("0"+now.getDate()).slice(-2);
+var seed=(now.getFullYear()*10000+(now.getMonth()+1)*100+now.getDate())*7919%4294967296;
+function rnd(){seed=(seed*1664525+1013904223)%4294967296;return seed/4294967296;}
+for(var w=0;w<5;w++)rnd();
+function ri(n){return Math.floor(rnd()*n);}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=ri(i+1),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+var grid,placed,found,sel=null,showAll=false,saved={};
+function build(){
+  var pool=shuffle(WORDS),picks=[];
+  for(var i=0;i<pool.length&&picks.length<COUNT;i++){if(pool[i].length<=N)picks.push(pool[i]);}
+  picks.sort(function(a,b){return b.length-a.length;});
+  grid=[];for(var r=0;r<N;r++){grid.push([]);for(var c=0;c<N;c++)grid[r].push("");}
+  placed=[];
+  for(var p=0;p<picks.length;p++){
+    var word=picks[p],ok=false;
+    for(var t=0;t<400&&!ok;t++){
+      var d=DIRS[ri(8)],r0=ri(N),c0=ri(N),r1=r0+d[0]*(word.length-1),c1=c0+d[1]*(word.length-1);
+      if(r1<0||r1>=N||c1<0||c1>=N)continue;
+      var fits=true;
+      for(var k=0;k<word.length;k++){var ch=grid[r0+d[0]*k][c0+d[1]*k];if(ch!==""&&ch!==word.charAt(k)){fits=false;break;}}
+      if(!fits)continue;
+      for(k=0;k<word.length;k++)grid[r0+d[0]*k][c0+d[1]*k]=word.charAt(k);
+      placed.push({w:word,r:r0,c:c0,d:d});ok=true;
+    }
+  }
+  var L="ABCDEFGHIJKLMNOPRSTUVWY";
+  for(r=0;r<N;r++)for(c=0;c<N;c++)if(grid[r][c]==="")grid[r][c]=L.charAt(ri(L.length));
+  placed.sort(function(a,b){return a.w<b.w?-1:1;});
+}
+function load(){try{var s=localStorage.getItem("grimoire-"+key);if(s)return JSON.parse(s);}catch(e){}return {};}
+function save(){try{localStorage.setItem("grimoire-"+key,JSON.stringify(found));}catch(e){}}
+
+function cells(p){var a=[];for(var k=0;k<p.w.length;k++)a.push([p.r+p.d[0]*k,p.c+p.d[1]*k]);return a;}
+function el(id){return document.getElementById(id);}
+
+function render(){
+  var cls=[];for(var r=0;r<N;r++){cls.push([]);for(var c=0;c<N;c++)cls[r].push("");}
+  var n=0;
+  for(var i=0;i<placed.length;i++){
+    var p=placed[i];
+    if(found[p.w]!==undefined){n++;var cs=cells(p);for(var k=0;k<cs.length;k++)cls[cs[k][0]][cs[k][1]]="c"+found[p.w];}
+    else if(showAll){cs=cells(p);for(k=0;k<cs.length;k++)if(cls[cs[k][0]][cs[k][1]]==="")cls[cs[k][0]][cs[k][1]]="show";}
+  }
+  if(sel)cls[sel[0]][sel[1]]="sel";
+  var h="";
+  for(r=0;r<N;r++){h+="<tr>";for(c=0;c<N;c++)h+='<td class="'+cls[r][c]+'" data-r="'+r+'" data-c="'+c+'">'+grid[r][c]+"</td>";h+="</tr>";}
+  el("grid").innerHTML=h;
+  var l="";
+  for(i=0;i<placed.length;i++){var f=found[placed[i].w];l+='<span class="w'+(f!==undefined?" done c"+f:"")+'">'+placed[i].w.charAt(0)+placed[i].w.slice(1).toLowerCase()+"</span> ";}
+  el("list").innerHTML=l;
+  el("count").innerHTML=n+" of "+placed.length+" found";
+  el("msg").innerHTML=(n===placed.length)?"The realm is at peace. Well done, brave one!":"";
+}
+
+function tap(r,c){
+  if(!sel){sel=[r,c];render();return;}
+  if(sel[0]===r&&sel[1]===c){sel=null;render();return;}
+  var dr=r-sel[0],dc=c-sel[1],len=Math.max(Math.abs(dr),Math.abs(dc));
+  if(dr!==0&&dc!==0&&Math.abs(dr)!==Math.abs(dc)){sel=[r,c];render();return;}
+  var sr=dr?dr/Math.abs(dr):0,sc=dc?dc/Math.abs(dc):0,s="";
+  for(var k=0;k<=len;k++)s+=grid[sel[0]+sr*k][sel[1]+sc*k];
+  var rev=s.split("").reverse().join(""),hit=null;
+  for(var i=0;i<placed.length;i++){var w=placed[i].w;if(found[w]===undefined&&(w===s||w===rev))hit=w;}
+  if(hit){var used=0;for(var key2 in found)used++;found[hit]=used%6;save();sel=null;}
+  else sel=[r,c];
+  render();
+}
+el("grid").onclick=function(e){
+  e=e||window.event;var t=e.target||e.srcElement;
+  while(t&&t.tagName!=="TD")t=t.parentNode;
+  if(t)tap(parseInt(t.getAttribute("data-r"),10),parseInt(t.getAttribute("data-c"),10));
+};
+el("reveal").onclick=function(){showAll=!showAll;this.innerHTML=showAll?"Hide answers":"Reveal answers";render();};
+el("reset").onclick=function(){found={};sel=null;showAll=false;el("reveal").innerHTML="Reveal answers";save();render();};
+
+var M=["January","February","March","April","May","June","July","August","September","October","November","December"];
+el("date").innerHTML=M[now.getMonth()]+" "+now.getDate()+", "+now.getFullYear();
+build();found=load();render();
+})();
+</script>
+</body>
+</html>
