@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Court Sprite – Your Prythian Pet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Pinyon+Script&family=Great+Vibes&display=swap">
+<style>
+html,body{margin:0;padding:0}
+body{background:#f3e6c4;color:#2a1a0f;font-family:"Great Vibes","Brush Script MT","Apple Chancery","Lucida Calligraphy",cursive;text-align:center}
+#page{max-width:600px;margin:0 auto;padding:14px 10px 30px}
+h1{font-family:"Pinyon Script","Great Vibes","Brush Script MT",cursive;font-weight:normal;font-size:46px;line-height:1.1;margin:6px 0 0;color:#3a1d5c}
+h2{font-family:"Pinyon Script","Great Vibes",cursive;font-weight:normal;font-size:36px;margin:4px 0;color:#3a1d5c}
+#sub{font-size:28px;color:#9a6b12;margin:0 0 2px}
+.orn{font-size:22px;color:#9a6b12;letter-spacing:6px;margin:2px 0}
+.stripe{font-size:0;line-height:0;margin:8px auto;max-width:560px}
+.stripe span{display:inline-block;width:12.5%;height:12px}
+a.btn,button{font-family:"Great Vibes","Brush Script MT",cursive;font-size:26px;background:#3a1d5c;color:#2a1a0f;border:2px solid #9a6b12;border-radius:6px;padding:4px 14px;margin:4px 3px;text-decoration:none;display:inline-block}
+#frame{border:4px double #3a1d5c;padding:8px;background:#fbf3dc;display:inline-block;width:88%;max-width:560px;box-sizing:border-box;box-shadow:0 0 0 5px #7fd68a,0 0 0 10px #4fc8d6,0 0 0 15px #9b7bd6,0 0 0 20px #f5a9b8;margin:22px auto}
+.info{font-size:25px;margin:2px 0;color:#1f4e8c}
+.say{font-size:30px;color:#3a1d5c;min-height:38px;margin:2px 0 6px}
+.how{background:#efe4f7;border-radius:8px;padding:6px 8px;font-size:23px;margin:6px 0}
+svg{width:78%;max-width:290px;height:auto}
+.stat{margin:5px 0;font-size:24px;white-space:nowrap}
+.stat b{display:inline-block;width:72px;text-align:right;font-weight:normal;margin-right:6px}
+.bar{display:inline-block;width:52%;height:22px;border:3px solid #2a1a0f;border-radius:12px;background:#fbf3dc;overflow:hidden;vertical-align:middle}
+.bar i{display:block;height:100%}
+.num{display:inline-block;width:44px;text-align:left;margin-left:6px}
+.sw{display:inline-block;width:52px;height:52px;border:3px solid #2a1a0f;border-radius:50%;font-family:"Cinzel",Georgia,serif;font-weight:bold;font-size:18px;line-height:46px;text-align:center;margin:4px;padding:0;color:#2a1a0f;vertical-align:middle}
+.sw.pick{border-width:6px}
+input{font-family:"Cinzel",Georgia,serif;font-size:24px;padding:6px 10px;border:3px solid #3a1d5c;border-radius:6px;background:#fff;width:70%;text-align:center;margin:8px 0}
+button[data-a="feed"]{background:#f08a3c}
+button[data-a="play"]{background:#f5a9b8}
+button[data-a="rest"]{background:#9b7bd6}
+button[data-a="clean"]{background:#4fc8d6}
+button[data-a="cuddle"]{background:#f5d24a}
+button[data-a="color"]{background:#7fd68a}
+button[data-a="hatch"]{background:#e5534b}
+button[data-a="reset"]{background:#fbf3dc;font-size:20px}
+</style>
+</head>
+<body>
+<div id="page">
+  <div class="orn">&#10022; &#10070; &#10022;</div>
+  <h1>Your Court Sprite</h1>
+  <div id="sub">A Court of Thorns and Roses</div>
+  <div class="stripe"><span style="background:#7fd68a"></span><span style="background:#4fc8d6"></span><span style="background:#f08a3c"></span><span style="background:#a8cdf5"></span><span style="background:#9b7bd6"></span><span style="background:#f5d24a"></span><span style="background:#f5a9b8"></span><span style="background:#e5534b"></span></div>
+  <div id="frame"><div id="app"></div></div>
+  <div class="stripe"><span style="background:#7fd68a"></span><span style="background:#4fc8d6"></span><span style="background:#f08a3c"></span><span style="background:#a8cdf5"></span><span style="background:#9b7bd6"></span><span style="background:#f5d24a"></span><span style="background:#f5a9b8"></span><span style="background:#e5534b"></span></div>
+  <div><a class="btn" style="background:#f5d24a" href="games.html">Games</a><a class="btn" style="background:#e5534b" href="index.html">Word Search</a></div>
+  <div class="orn">&#10022; &#10070; &#10022;</div>
+</div>
+<script>
+(function(){
+var C=[["Spring","Sp","#7fd68a"],["Summer","Su","#4fc8d6"],["Autumn","Au","#f08a3c"],["Winter","Wi","#a8cdf5"],["Night","Ni","#9b7bd6"],["Day","Da","#f5d24a"],["Dawn","Dw","#f5a9b8"],["Rose","Ro","#e5534b"]];
+var K="prythian-pet-v1",INK="#2a1a0f";
+var RATE={food:6,joy:4,rest:3,clean:3};  /* points lost per real hour */
+var STAGES=["Hatchling","Fledgling","Courtier","High Sprite"];
+var st=load(),pick=4,say="",confirmReset=false;
+function el(i){return document.getElementById(i);}
+function load(){try{var s=localStorage.getItem(K);if(s)return JSON.parse(s);}catch(e){}return null;}
+function save(){try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}}
+function cl(v){return v<0?0:(v>100?100:v);}
+function tick(){
+  if(!st)return;
+  var now=new Date().getTime(),h=(now-st.last)/3600000;
+  if(h<0)h=0;if(h>72)h=72;
+  for(var k in RATE)st[k]=cl(st[k]-RATE[k]*h);
+  st.last=now;
+}
+function stage(){var d=(new Date().getTime()-st.born)/86400000;return d<1?0:(d<3?1:(d<7?2:3));}
+function ageText(){
+  var h=Math.floor((new Date().getTime()-st.born)/3600000);
+  return h<48?h+" hours old":Math.floor(h/24)+" days old";
+}
+function mood(){
+  var a=(st.food+st.joy+st.rest+st.clean)/4;
+  if(st.rest<20)return "sleepy";
+  if(st.food<25)return "hungry";
+  if(st.clean<25)return "dirty";
+  if(a<35)return "sad";
+  if(a>=70)return "happy";
+  return "calm";
+}
+var LINES={sleepy:"I am so sleepy...",hungry:"My tummy is rumbling!",dirty:"I need a good wash.",sad:"I miss you...",happy:"I feel wonderful!",calm:"Hello, friend."};
+
+function egg(){
+  var c=C[pick][2];
+  return '<svg viewBox="0 0 240 240"><circle cx="120" cy="125" r="112" fill="#efe4f7"/>'+
+  '<ellipse cx="120" cy="140" rx="62" ry="80" fill="'+c+'" stroke="'+INK+'" stroke-width="5"/>'+
+  '<circle cx="95" cy="110" r="11" fill="#fbf3dc"/><circle cx="145" cy="135" r="14" fill="#fbf3dc"/><circle cx="110" cy="170" r="9" fill="#fbf3dc"/><circle cx="148" cy="95" r="7" fill="#fbf3dc"/><circle cx="82" cy="150" r="7" fill="#fbf3dc"/>'+
+  '<path d="M60 128 L82 118 L98 130 L120 114 L142 128 L160 117 L180 128" fill="none" stroke="'+INK+'" stroke-width="3"/></svg>';
+}
+function sprite(){
+  var s=stage(),m=mood(),c=C[st.court][2],sc=[0.62,0.8,0.95,1][s],o="";
+  o+='<svg viewBox="0 0 240 240"><circle cx="120" cy="125" r="112" fill="#efe4f7"/>';
+  o+='<g transform="translate(120,150) scale('+sc+') translate(-120,-150)">';
+  if(s>=2){
+    o+='<ellipse cx="48" cy="150" rx="26" ry="50" transform="rotate(-18 48 150)" fill="#fbf3dc" stroke="'+INK+'" stroke-width="4"/>';
+    o+='<ellipse cx="192" cy="150" rx="26" ry="50" transform="rotate(18 192 150)" fill="#fbf3dc" stroke="'+INK+'" stroke-width="4"/>';
+  }
+  if(s>=1){
+    o+='<polygon points="62,118 28,74 88,98" fill="'+c+'" stroke="'+INK+'" stroke-width="5" stroke-linejoin="round"/>';
+    o+='<polygon points="178,118 212,74 152,98" fill="'+c+'" stroke="'+INK+'" stroke-width="5" stroke-linejoin="round"/>';
+  }
+  o+='<ellipse cx="120" cy="150" rx="70" ry="62" fill="'+c+'" stroke="'+INK+'" stroke-width="5"/>';
+  o+='<ellipse cx="120" cy="170" rx="40" ry="28" fill="#fbf3dc" opacity="0.55"/>';
+  if(s>=3)o+='<polygon points="90,96 98,64 112,84 120,58 128,84 142,64 150,96" fill="#e8c46a" stroke="'+INK+'" stroke-width="4" stroke-linejoin="round"/>';
+  /* eyes */
+  if(m==="happy"){o+='<path d="M83 138 Q95 120 107 138" fill="none" stroke="'+INK+'" stroke-width="6" stroke-linecap="round"/><path d="M133 138 Q145 120 157 138" fill="none" stroke="'+INK+'" stroke-width="6" stroke-linecap="round"/>';}
+  else if(m==="sleepy"){o+='<path d="M83 136 L107 136" stroke="'+INK+'" stroke-width="6" stroke-linecap="round"/><path d="M133 136 L157 136" stroke="'+INK+'" stroke-width="6" stroke-linecap="round"/><text x="176" y="100" font-family="Georgia,serif" font-size="34" font-weight="bold" fill="'+INK+'">z</text><text x="196" y="78" font-family="Georgia,serif" font-size="24" font-weight="bold" fill="'+INK+'">z</text>';}
+  else{o+='<circle cx="95" cy="136" r="11" fill="'+INK+'"/><circle cx="145" cy="136" r="11" fill="'+INK+'"/><circle cx="99" cy="132" r="4" fill="#fff"/><circle cx="149" cy="132" r="4" fill="#fff"/>';
+    if(m==="sad"||m==="hungry")o+='<path d="M80 118 L108 126" stroke="'+INK+'" stroke-width="5" stroke-linecap="round"/><path d="M160 118 L132 126" stroke="'+INK+'" stroke-width="5" stroke-linecap="round"/>';}
+  /* mouth */
+  if(m==="happy")o+='<path d="M100 166 Q120 198 140 166 Z" fill="#e5534b" stroke="'+INK+'" stroke-width="4" stroke-linejoin="round"/><circle cx="78" cy="160" r="9" fill="#f5a9b8" opacity="0.8"/><circle cx="162" cy="160" r="9" fill="#f5a9b8" opacity="0.8"/>';
+  else if(m==="sad")o+='<path d="M104 184 Q120 164 136 184" fill="none" stroke="'+INK+'" stroke-width="5" stroke-linecap="round"/>';
+  else if(m==="hungry")o+='<ellipse cx="120" cy="176" rx="12" ry="15" fill="#7a2a3a" stroke="'+INK+'" stroke-width="4"/>';
+  else if(m==="sleepy")o+='<ellipse cx="120" cy="176" rx="7" ry="5" fill="#7a2a3a" stroke="'+INK+'" stroke-width="3"/>';
+  else if(m==="dirty")o+='<path d="M102 176 Q111 166 120 176 T138 176" fill="none" stroke="'+INK+'" stroke-width="5" stroke-linecap="round"/>';
+  else o+='<path d="M104 172 Q120 184 136 172" fill="none" stroke="'+INK+'" stroke-width="5" stroke-linecap="round"/>';
+  /* mess */
+  if(st.clean<40)o+='<circle cx="150" cy="116" r="6" fill="#8a5a2b"/><circle cx="86" cy="190" r="5" fill="#8a5a2b"/><circle cx="168" cy="178" r="7" fill="#8a5a2b"/><circle cx="72" cy="140" r="4" fill="#8a5a2b"/>';
+  o+='</g>';
+  if(m==="happy")o+='<polygon points="30,48 36,30 42,48 60,54 42,60 36,78 30,60 12,54" fill="#e8c46a" stroke="'+INK+'" stroke-width="2"/><polygon points="204,40 208,28 212,40 224,44 212,48 208,60 204,48 192,44" fill="#e8c46a" stroke="'+INK+'" stroke-width="2"/>';
+  o+='</svg>';
+  return o;
+}
+function bar(label,v,col){
+  return '<div class="stat"><b>'+label+'</b><span class="bar"><i style="width:'+Math.round(v)+'%;background:'+col+'"></i></span><span class="num">'+Math.round(v)+'</span></div>';
+}
+function render(){
+  var h="";
+  if(!st){
+    h+='<h2>An egg awaits</h2>'+egg();
+    h+='<div class="how">Pick a Court color for your egg, give your sprite a name, then tap Hatch. Your sprite needs care in real time: food, play, rest and baths. It never dies, it just gets sad if you stay away.</div><div>';
+    for(var i=0;i<8;i++)h+='<button class="sw'+(i===pick?' pick':'')+'" data-a="pick" data-v="'+i+'" style="background:'+C[i][2]+'">'+C[i][1]+'</button>';
+    h+='</div><div><input id="nm" type="text" maxlength="14" placeholder="Name your sprite"></div><div><button data-a="hatch">Hatch</button></div>';
+  }else{
+    h+='<h2>'+st.name+'</h2><div class="info">'+STAGES[stage()]+' &middot; '+C[st.court][0]+' Court &middot; '+ageText()+'</div>';
+    h+=sprite();
+    h+='<div class="say">'+(say||LINES[mood()])+'</div>';
+    h+=bar("Food",st.food,"#f08a3c")+bar("Joy",st.joy,"#f5a9b8")+bar("Rest",st.rest,"#9b7bd6")+bar("Clean",st.clean,"#4fc8d6");
+    h+='<div><button data-a="feed">Feed</button><button data-a="play">Play</button><button data-a="rest">Rest</button><button data-a="clean">Wash</button><button data-a="cuddle">Cuddle</button><button data-a="color">Change color</button></div>';
+    h+='<div><button data-a="reset">'+(confirmReset?'Tap again to say goodbye':'New egg')+'</button></div>';
+  }
+  el("app").innerHTML=h;
+}
+function change(o){for(var k in o)st[k]=cl(st[k]+o[k]);}
+el("app").onclick=function(e){
+  e=e||window.event;var t=e.target||e.srcElement;
+  while(t&&t.nodeType===1&&!t.getAttribute("data-a"))t=t.parentNode;
+  if(!t||t.nodeType!==1)return;
+  var a=t.getAttribute("data-a");
+  if(!st){
+    if(a==="pick"){pick=parseInt(t.getAttribute("data-v"),10);render();}
+    else if(a==="hatch"){
+      var n=el("nm").value.replace(/^\s+|\s+$/g,"").replace(/[<>&"]/g,"");
+      var now=new Date().getTime();
+      st={name:n||"Sprite",court:pick,born:now,last:now,food:80,joy:80,rest:80,clean:90};
+      say="It hatched! Hello, "+st.name+"!";save();render();
+    }
+    return;
+  }
+  tick();confirmReset=(a==="reset"&&confirmReset);
+  if(a==="feed"){if(st.food>=95)say="I am completely full!";else{change({food:30,clean:-4});say="Nom nom nom! Delicious.";}}
+  else if(a==="play"){if(st.rest<15)say="Too tired to play...";else{change({joy:30,rest:-10,food:-8,clean:-5});say="Wheee! That was fun!";}}
+  else if(a==="rest"){change({rest:45});say="Zzz... I feel rested.";}
+  else if(a==="clean"){change({clean:45});say="Splash! Sparkling clean.";}
+  else if(a==="cuddle"){change({joy:12});say="Purr, purr, purr.";}
+  else if(a==="color"){st.court=(st.court+1)%8;say="A new coat: "+C[st.court][0]+" Court!";}
+  else if(a==="reset"){
+    if(confirmReset){st=null;try{localStorage.removeItem(K);}catch(x){}say="";confirmReset=false;render();return;}
+    confirmReset=true;say="";
+  }
+  if(st)save();render();
+};
+tick();if(st)save();render();
+})();
+</script>
+</body>
+</html>

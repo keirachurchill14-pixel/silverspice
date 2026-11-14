@@ -14,8 +14,23 @@ h1{font-family:"Pinyon Script","Great Vibes","Brush Script MT",cursive;font-weig
 h2{font-family:"Pinyon Script","Great Vibes",cursive;font-weight:normal;font-size:36px;margin:8px 0 2px;color:#3a1d5c}
 .orn{font-size:22px;color:#9a6b12;letter-spacing:6px;margin:2px 0}
 .nav a,.nav button,.ctl button{font-family:"Great Vibes","Brush Script MT",cursive;font-size:26px;background:#3a1d5c;color:#fbf3dc;border:2px solid #9a6b12;border-radius:6px;padding:4px 14px;margin:4px 3px;text-decoration:none;display:inline-block}
-.nav button.on{background:#1f4e8c}
-#frame{border:4px double #3a1d5c;padding:8px;background:#fbf3dc;display:inline-block;width:94%;max-width:560px;box-sizing:border-box}
+.nav button[data-g="0"]{background:#7fd68a;color:#2a1a0f}
+.nav button[data-g="1"]{background:#4fc8d6;color:#2a1a0f}
+.nav button[data-g="2"]{background:#f08a3c;color:#2a1a0f}
+.nav button[data-g="3"]{background:#9b7bd6;color:#2a1a0f}
+.nav button[data-g="4"]{background:#f5d24a;color:#2a1a0f}
+.nav button[data-g="5"]{background:#f5a9b8;color:#2a1a0f}
+.nav a{background:#e5534b;color:#2a1a0f}
+.nav button.on{border:3px solid #2a1a0f;text-decoration:underline}
+.ctl button[data-a="today"]{background:#f5d24a;color:#2a1a0f}
+.ctl button[data-a="rand"]{background:#4fc8d6;color:#2a1a0f}
+.ctl button[data-a="brew"]{background:#e5534b;color:#2a1a0f}
+.ctl button[data-a="undo"],.ctl button[data-a="erase"]{background:#f5a9b8;color:#2a1a0f}
+.how{background:#efe4f7;border-radius:8px;padding:6px 8px}
+h2{border-bottom:4px solid #f5d24a;display:inline-block;padding:0 16px}
+.stripe{font-size:0;line-height:0;margin:8px auto;max-width:560px}
+.stripe span{display:inline-block;width:12.5%;height:12px}
+#frame{box-shadow:0 0 0 5px #7fd68a,0 0 0 10px #4fc8d6,0 0 0 15px #9b7bd6,0 0 0 20px #f5a9b8;margin:22px auto;border:4px double #3a1d5c;padding:8px;background:#fbf3dc;display:inline-block;width:88%;max-width:560px;box-sizing:border-box}
 .sec{display:none}
 .sec.show{display:block}
 .info{font-size:25px;margin:6px 0;color:#1f4e8c}
@@ -29,6 +44,14 @@ table.g td{padding:0;border:2px solid #fbf3dc;text-align:center;vertical-align:m
 table.fl td{font-size:3.6vw;height:8.4vw}
 table.mem td{font-size:7vw;height:21vw;border:4px solid #fbf3dc;cursor:pointer}
 @media (min-width:600px){table.fl td{font-size:20px;height:46px}table.mem td{font-size:40px;height:110px}}
+table.sd td{border:1px solid #bda977;font-size:4.4vw;height:12.5vw;cursor:pointer;background:#fbf3dc}
+table.sd td.gv{outline:3px solid #2a1a0f;outline-offset:-5px}
+table.sd td.sl2{outline:4px dashed #3a1d5c;outline-offset:-4px}
+table.lt td{border:3px solid #fbf3dc;font-size:4.6vw;height:14vw;cursor:pointer}
+.tube{display:inline-block;width:12%;margin:4px .7%;border:3px solid #2a1a0f;border-radius:4px 4px 16px 16px;padding:2px;vertical-align:top;background:#fbf3dc;box-sizing:border-box;cursor:pointer}
+.tube.sel{border-color:#3a1d5c;box-shadow:0 0 0 4px #e8c46a}
+.sl{height:40px;margin:2px 0;font-family:"Cinzel",Georgia,serif;font-weight:bold;font-size:14px;line-height:40px;color:#2a1a0f;border-radius:3px}
+@media (min-width:600px){table.sd td{font-size:24px;height:70px}table.lt td{font-size:26px;height:80px}}
 td.hid{background:#3a1d5c;color:#e8c46a}
 </style>
 </head>
@@ -37,17 +60,26 @@ td.hid{background:#3a1d5c;color:#e8c46a}
   <div class="orn">&#10022; &#10070; &#10022;</div>
   <h1>Prythian Games</h1>
   <div id="sub">A Court of Thorns and Roses</div>
+  <div class="stripe"><span style="background:#7fd68a"></span><span style="background:#4fc8d6"></span><span style="background:#f08a3c"></span><span style="background:#a8cdf5"></span><span style="background:#9b7bd6"></span><span style="background:#f5d24a"></span><span style="background:#f5a9b8"></span><span style="background:#e5534b"></span></div>
   <div class="nav">
-    <button data-g="0" class="on">Crack the Bargain</button>
-    <button data-g="1">Court Flood</button>
-    <button data-g="2">Court Memory</button>
+    <button data-g="0" class="on">Bargain</button>
+    <button data-g="1">Flood</button>
+    <button data-g="2">Memory</button>
+    <button data-g="3">Sudoku</button>
+    <button data-g="4">Sorting</button>
+    <button data-g="5">Lights</button>
     <a href="index.html">Word Search</a>
+    <a href="pet.html" style="background:#4fc8d6">Pet</a>
   </div>
   <div id="frame">
     <div id="s0" class="sec show"></div>
     <div id="s1" class="sec"></div>
     <div id="s2" class="sec"></div>
+    <div id="s3" class="sec"></div>
+    <div id="s4" class="sec"></div>
+    <div id="s5" class="sec"></div>
   </div>
+  <div class="stripe"><span style="background:#7fd68a"></span><span style="background:#4fc8d6"></span><span style="background:#f08a3c"></span><span style="background:#a8cdf5"></span><span style="background:#9b7bd6"></span><span style="background:#f5d24a"></span><span style="background:#f5a9b8"></span><span style="background:#e5534b"></span></div>
   <div id="msg"></div>
   <div class="orn">&#10022; &#10070; &#10022;</div>
 </div>
@@ -156,16 +188,109 @@ el("s2").onclick=function(e){var t=act(e);if(!t)return;var a=t.getAttribute("dat
     else{M.pend=[open[0],open[1]];msg("");}}
   mRender();};
 
+
+/* ---------- 4. Court Sudoku (6x6, boxes 2 rows by 3 columns) ---------- */
+var S={g:[],fix:[],sel:-1,over:false};
+function perm(r,n){var a=[],i;for(i=0;i<n;i++)a.push(i);for(i=n-1;i>0;i--){var j=Math.floor(r()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function sNew(r){
+  var sym=perm(r,6),bands=perm(r,3),ro=[],st=perm(r,2),co=[],i,j,w;
+  for(i=0;i<3;i++){w=perm(r,2);for(j=0;j<2;j++)ro.push(bands[i]*2+w[j]);}
+  for(i=0;i<2;i++){w=perm(r,3);for(j=0;j<3;j++)co.push(st[i]*3+w[j]);}
+  S.g=[];S.fix=[];
+  for(i=0;i<6;i++)for(j=0;j<6;j++){var rr=ro[i],cc=co[j];S.g.push(sym[(3*(rr%2)+Math.floor(rr/2)+cc)%6]);S.fix.push(true);}
+  var idx=perm(r,36);for(i=0;i<18;i++){S.g[idx[i]]=-1;S.fix[idx[i]]=false;}
+  S.sel=-1;S.over=false;sRender();
+}
+function sBad(i){
+  var v=S.g[i];if(v<0)return false;
+  var r=Math.floor(i/6),c=i%6,br=Math.floor(r/2),bc=Math.floor(c/3);
+  for(var k=0;k<36;k++){if(k===i||S.g[k]!==v)continue;var kr=Math.floor(k/6),kc=k%6;
+    if(kr===r||kc===c||(Math.floor(kr/2)===br&&Math.floor(kc/3)===bc))return true;}
+  return false;
+}
+function sRender(){
+  var h='<h2>Court Sudoku</h2><div class="how">Fill every row, every column and every box of 2 by 3 tiles with all six Courts, once each. Tap an empty tile, then tap a color. A ! means a clash. Outlined tiles are fixed.</div><table class="g sd">';
+  for(var y=0;y<6;y++){h+='<tr>';for(var x=0;x<6;x++){var i=y*6+x,v=S.g[i],cls=S.fix[i]?"gv":(S.sel===i?"sl2":""),b="";
+    if(x===2)b+="border-right:4px solid #3a1d5c;";if(y%2===1&&y<5)b+="border-bottom:4px solid #3a1d5c;";
+    h+='<td data-a="cell" data-v="'+i+'" class="'+cls+'" style="'+b+(v>=0?'background:'+C[v][2]+';':'')+'">'+(v>=0?C[v][1]+(sBad(i)?"!":""):"")+'</td>';}h+='</tr>';}
+  h+='</table><div>';for(i=0;i<6;i++)h+='<button class="sw" data-a="put" data-v="'+i+'" style="background:'+C[i][2]+'">'+C[i][1]+'</button>';
+  h+='</div><div class="ctl"><button data-a="erase">Erase</button></div>'+ctl();el("s3").innerHTML=h;
+}
+function sCheck(){
+  for(var i=0;i<36;i++){if(S.g[i]<0||sBad(i))return;}
+  S.over=true;msg("Every Court sits in its place. Solved!");
+}
+el("s3").onclick=function(e){var t=act(e);if(!t)return;var a=t.getAttribute("data-a"),v=parseInt(t.getAttribute("data-v"),10);
+  if(a==="cell"){if(!S.fix[v]&&!S.over)S.sel=v;sRender();}
+  else if(a==="put"&&S.sel>=0&&!S.over){S.g[S.sel]=v;sCheck();sRender();}
+  else if(a==="erase"&&S.sel>=0&&!S.over){S.g[S.sel]=-1;msg("");sRender();}
+  else if(a==="today"){msg("");sNew(rng(DAY+4));}
+  else if(a==="rand"){msg("");sNew(Math.random);}};
+
+/* ---------- 5. Sort the Courts (pour colors until each tube is one Court) ---------- */
+var T={t:[],sel:-1,hist:[],moves:0,over:false};
+function tWin(){for(var i=0;i<T.t.length;i++){var u=T.t[i];if(u.length===0)continue;if(u.length<4)return false;for(var k=1;k<4;k++)if(u[k]!==u[0])return false;}return true;}
+function tCopy(){var c=[];for(var i=0;i<T.t.length;i++)c.push(T.t[i].slice());return c;}
+function tNew(r){
+  var u=[],i,j;for(i=0;i<5;i++)for(j=0;j<4;j++)u.push(i);
+  for(i=u.length-1;i>0;i--){j=Math.floor(r()*(i+1));var x=u[i];u[i]=u[j];u[j]=x;}
+  T.t=[];for(i=0;i<5;i++)T.t.push(u.slice(i*4,i*4+4));T.t.push([]);T.t.push([]);
+  if(tWin()){var q=T.t[0][0];T.t[0][0]=T.t[1][0];T.t[1][0]=q;}
+  T.sel=-1;T.hist=[];T.moves=0;T.over=false;tRender();
+}
+function tRender(){
+  var h='<h2>Sort the Courts</h2><div class="how">Tap a tube, then tap where to pour it. A Court color can pour onto the same color or into an empty tube. Each tube holds four. Gather each Court in its own tube.</div>';
+  h+='<div class="info">Pours: '+T.moves+'</div><div>';
+  for(var i=0;i<T.t.length;i++){h+='<div class="tube'+(T.sel===i?' sel':'')+'" data-a="tube" data-v="'+i+'">';
+    for(var k=3;k>=0;k--){var c=T.t[i][k];h+='<div class="sl"'+(c!==undefined?' style="background:'+C[c][2]+'">'+C[c][1]:'>&nbsp;')+'</div>';}h+='</div>';}
+  h+='</div><div class="ctl"><button data-a="undo">Undo</button></div>'+ctl();el("s4").innerHTML=h;
+}
+el("s4").onclick=function(e){var t=act(e);if(!t)return;var a=t.getAttribute("data-a"),v=parseInt(t.getAttribute("data-v"),10);
+  if(a==="today"){msg("");tNew(rng(DAY+5));return;}
+  if(a==="rand"){msg("");tNew(Math.random);return;}
+  if(a==="undo"){if(T.hist.length&&!T.over){var h=T.hist.pop();T.t=h.t;T.moves=h.m;T.sel=-1;msg("");}tRender();return;}
+  if(a!=="tube"||T.over)return;
+  if(T.sel<0){if(T.t[v].length)T.sel=v;tRender();return;}
+  if(T.sel===v){T.sel=-1;tRender();return;}
+  var src=T.t[T.sel],dst=T.t[v];
+  if(src.length&&dst.length<4&&(dst.length===0||dst[dst.length-1]===src[src.length-1])){
+    T.hist.push({t:tCopy(),m:T.moves});var top=src[src.length-1];
+    while(src.length&&src[src.length-1]===top&&dst.length<4)dst.push(src.pop());
+    T.moves++;T.sel=-1;
+    if(tWin()){T.over=true;msg("Each Court has its own tube. Done in "+T.moves+" pours!");}
+  }else{T.sel=dst.length?v:-1;}
+  tRender();};
+
+/* ---------- 6. Court Lights (tap to cycle Night, Day, Dawn; make all one color) ---------- */
+var LC=[4,5,6],L={g:[],moves:0,over:false};
+function lTap(i){var x=i%5,y=Math.floor(i/5),a=[i];if(x>0)a.push(i-1);if(x<4)a.push(i+1);if(y>0)a.push(i-5);if(y<4)a.push(i+5);
+  for(var k=0;k<a.length;k++)L.g[a[k]]=(L.g[a[k]]+1)%3;}
+function lSame(){for(var i=1;i<25;i++)if(L.g[i]!==L.g[0])return false;return true;}
+function lNew(r){
+  do{L.g=[];for(var i=0;i<25;i++)L.g.push(0);for(i=0;i<14;i++)lTap(Math.floor(r()*25));}while(lSame());
+  L.moves=0;L.over=false;lRender();
+}
+function lRender(){
+  var h='<h2>Court Lights</h2><div class="how">Tap a tile to move it and its four neighbors to the next color: Night, then Day, then Dawn, then back to Night. Make all 25 tiles the same color.</div>';
+  h+='<div class="info">Taps: '+L.moves+'</div><table class="g lt">';
+  for(var y=0;y<5;y++){h+='<tr>';for(var x=0;x<5;x++){var i=y*5+x,c=C[LC[L.g[i]]];h+='<td data-a="lt" data-v="'+i+'" style="background:'+c[2]+'">'+c[1]+'</td>';}h+='</tr>';}
+  h+='</table>'+ctl();el("s5").innerHTML=h;
+}
+el("s5").onclick=function(e){var t=act(e);if(!t)return;var a=t.getAttribute("data-a");
+  if(a==="lt"&&!L.over){lTap(parseInt(t.getAttribute("data-v"),10));L.moves++;if(lSame()){L.over=true;msg("The Courts are in harmony! Done in "+L.moves+" taps.");}else msg("");lRender();}
+  else if(a==="today"){msg("");lNew(rng(DAY+6));}
+  else if(a==="rand"){msg("");lNew(Math.random);}};
+
 /* ---------- menu ---------- */
 var btns=document.getElementsByTagName("button");
 function show(g){
-  for(var i=0;i<3;i++){el("s"+i).className="sec"+(i===g?" show":"");}
+  for(var i=0;i<6;i++){el("s"+i).className="sec"+(i===g?" show":"");}
   var nb=document.getElementsByTagName("button");
   for(i=0;i<nb.length;i++){if(nb[i].getAttribute("data-g")!==null)nb[i].className=(parseInt(nb[i].getAttribute("data-g"),10)===g)?"on":"";}
   msg("");
 }
 for(var b=0;b<btns.length;b++){if(btns[b].getAttribute("data-g")!==null){btns[b].onclick=function(){show(parseInt(this.getAttribute("data-g"),10));};}}
-pNew(rng(DAY+1));fNew(rng(DAY+2));mNew(rng(DAY+3));
+pNew(rng(DAY+1));fNew(rng(DAY+2));mNew(rng(DAY+3));sNew(rng(DAY+4));tNew(rng(DAY+5));lNew(rng(DAY+6));
 })();
 </script>
 </body>

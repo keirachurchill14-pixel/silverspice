@@ -14,7 +14,9 @@ h1{font-family:"Pinyon Script","Great Vibes","Brush Script MT",cursive;font-weig
 #sub{font-size:28px;color:#9a6b12;margin:0 0 2px}
 #date{font-size:26px;margin:0 0 4px}
 #count{font-size:24px;color:#1f4e8c;margin:4px 0 8px}
-#frame{border:4px double #3a1d5c;padding:6px;background:#fbf3dc;display:inline-block;width:94%;max-width:560px}
+.stripe{font-size:0;line-height:0;margin:8px auto;max-width:560px}
+.stripe span{display:inline-block;width:12.5%;height:12px}
+#frame{box-shadow:0 0 0 5px #7fd68a,0 0 0 10px #4fc8d6,0 0 0 15px #9b7bd6,0 0 0 20px #f5a9b8;margin:22px auto;border:4px double #3a1d5c;padding:6px;background:#fbf3dc;display:inline-block;width:88%;max-width:560px}
 table{border-collapse:collapse;table-layout:fixed;width:100%}
 td{padding:0;border:1px solid #d6c394;text-align:center;vertical-align:middle;
 font-family:"Cinzel",Georgia,serif;font-weight:bold;font-size:5.4vw;height:7.4vw;color:#2a1a0f;cursor:pointer}
@@ -27,13 +29,24 @@ td.c3{background:#f5cf6b;border-bottom:4px solid #b57a0a}
 td.c4{background:#c9a6ec;border-bottom:4px solid #6b3fa0}
 td.c5{background:#f4a96b;border-bottom:4px solid #b4531a}
 td.show{background:#fff;border-bottom:4px dotted #2a1a0f}
-#words{margin:16px 0 6px;padding:10px 6px;border-top:2px solid #9a6b12;border-bottom:2px solid #9a6b12}
+#words{margin:10px 0 6px;padding:10px 6px}
 #words h2{font-family:"Pinyon Script","Great Vibes",cursive;font-weight:normal;font-size:34px;margin:0 0 6px;color:#3a1d5c}
 .w{display:inline-block;width:31%;font-size:27px;line-height:1.25;margin:1px 0}
+.w{border-radius:8px;padding:0 4px;box-sizing:border-box}
+.w.k0{background:#cdeed2}
+.w.k1{background:#c3ecf1}
+.w.k2{background:#f9d4b3}
+.w.k3{background:#d9e9fa}
+.w.k4{background:#dccff2}
+.w.k5{background:#f9ecb0}
+.w.k6{background:#f9d3dc}
+.w.k7{background:#f5bcb8}
 .w.done{text-decoration:line-through;opacity:.75}
 .w.c0{color:#9b2335}.w.c1{color:#1f6b4f}.w.c2{color:#1f4e8c}.w.c3{color:#8a5a00}.w.c4{color:#6b3fa0}.w.c5{color:#b4531a}
 button{font-family:"Great Vibes","Brush Script MT",cursive;font-size:26px;background:#3a1d5c;color:#fbf3dc;border:2px solid #9a6b12;border-radius:6px;padding:4px 18px;margin:4px 6px}
 a.more{font-size:24px;color:#3a1d5c}
+#reveal{background:#4fc8d6;color:#2a1a0f}
+#reset{background:#f08a3c;color:#2a1a0f}
 #msg{font-size:30px;color:#1f6b4f;min-height:34px;margin:6px 0}
 #hint{font-size:21px;margin:4px 0}
 </style>
@@ -43,12 +56,15 @@ a.more{font-size:24px;color:#3a1d5c}
   <div class="orn">&#10022; &#10070; &#10022;</div>
   <h1>Prythian Word Search</h1>
   <div id="sub">A Court of Thorns and Roses</div>
+  <div class="stripe"><span style="background:#7fd68a"></span><span style="background:#4fc8d6"></span><span style="background:#f08a3c"></span><span style="background:#a8cdf5"></span><span style="background:#9b7bd6"></span><span style="background:#f5d24a"></span><span style="background:#f5a9b8"></span><span style="background:#e5534b"></span></div>
   <div id="date"></div>
-  <div><a class="more" href="games.html">More games: Crack the Bargain, Court Flood, Court Memory</a></div>
+  <div><a class="more" href="games.html">More games: Bargain, Flood, Memory, Sudoku, Sorting, Lights</a>
+  <div><a class="more" href="pet.html">Care for your Court Sprite</a></div></div>
   <div id="count"></div>
   <div id="frame"><table id="grid"></table></div>
   <div id="msg"></div>
   <div id="hint">Tap the first letter of a word, then its last letter.</div>
+  <div class="stripe"><span style="background:#7fd68a"></span><span style="background:#4fc8d6"></span><span style="background:#f08a3c"></span><span style="background:#a8cdf5"></span><span style="background:#9b7bd6"></span><span style="background:#f5d24a"></span><span style="background:#f5a9b8"></span><span style="background:#e5534b"></span></div>
   <div id="words"><h2>Names and words to find</h2><div id="list"></div></div>
   <button id="reveal">Reveal answers</button>
   <button id="reset">Start over</button>
@@ -109,7 +125,7 @@ function render(){
   for(r=0;r<N;r++){h+="<tr>";for(c=0;c<N;c++)h+='<td class="'+cls[r][c]+'" data-r="'+r+'" data-c="'+c+'">'+grid[r][c]+"</td>";h+="</tr>";}
   el("grid").innerHTML=h;
   var l="";
-  for(i=0;i<placed.length;i++){var f=found[placed[i].w];l+='<span class="w'+(f!==undefined?" done c"+f:"")+'">'+placed[i].w.charAt(0)+placed[i].w.slice(1).toLowerCase()+"</span> ";}
+  for(i=0;i<placed.length;i++){var f=found[placed[i].w];l+='<span class="w k'+(i%8)+(f!==undefined?" done c"+f:"")+'">'+placed[i].w.charAt(0)+placed[i].w.slice(1).toLowerCase()+"</span> ";}
   el("list").innerHTML=l;
   el("count").innerHTML=n+" of "+placed.length+" found";
   el("msg").innerHTML=(n===placed.length)?"The Courts are at peace. Well done, High Lady!":"";
